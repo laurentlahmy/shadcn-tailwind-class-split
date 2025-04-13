@@ -2,7 +2,7 @@
   "name": "shadcn-tailwind-class-split",
   "displayName": "Split shadcn tailwindcss class strings into new lines",
   "description": "",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "laurentlahmy",
   "icon": "icon.jpg",
   "repository": {

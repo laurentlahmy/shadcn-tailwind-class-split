@@ -58,6 +58,9 @@ function activate(context) {
 						textToTransform = line.text;
 						rangeToReplace = line.range; // Replace the entire line
 					} else {
+						// if (selection.charAt(0) === `"` && selection.charAt(selection.length - 1) === `"`) {
+						// 	selection = selection.slice(1, -1);
+						// }
 						// If there is a selection, use the selected text
 						textToTransform = document.getText(selection);
 						rangeToReplace = selection; // Replace only the selection
@@ -82,7 +85,11 @@ function activate(context) {
 
 					// 	editBuilder.replace(rangeToReplace, transformedText);
 					// }
+
 					if (textToTransform) {
+						if (textToTransform.charAt(0) === `"` && textToTransform.charAt(textToTransform.length - 1) === `"`) {
+							textToTransform = textToTransform.slice(1, -1);
+						}
 						// 1. Trim whitespace from start/end
 						// 2. Split by one or more whitespace characters (\s+)
 						// 3. Filter out any empty strings resulting from multiple spaces
