@@ -1,9 +1,13 @@
 {
   "name": "shadcn-tailwind-class-split",
-  "displayName": "shadcn-tailwind-class-split",
+  "displayName": "Split shadcn tailwindcss class strings into new lines",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "publisher": "laurentlahmy",
+  "icon": "icon.jpg",
+  "repository": {
+    "url": ""
+  },
   "engines": {
     "vscode": "^1.99.0"
   },

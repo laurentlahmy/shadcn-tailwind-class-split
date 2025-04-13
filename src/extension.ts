@@ -35,66 +35,85 @@ const vscode = require('vscode');
  */
 function activate(context) {
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.splitStringAddCommas', function () {
-        // Get the active text editor
-        const editor = vscode.window.activeTextEditor;
+	// The command has been defined in the package.json file
+	// Now provide the implementation of the command with registerCommand
+	// The commandId parameter must match the command field in package.json
+	let disposable = vscode.commands.registerCommand('extension.splitStringAddCommas', function () {
+		// Get the active text editor
+		const editor = vscode.window.activeTextEditor;
 
-        if (editor) {
-            const document = editor.document;
-            const selections = editor.selections;
+		if (editor) {
+			const document = editor.document;
+			const selections = editor.selections;
 
-            // Use editor.edit to make modifications bundleable for undo/redo
-            editor.edit(editBuilder => {
-                selections.forEach(selection => {
-                    let textToTransform;
-                    let rangeToReplace;
+			// Use editor.edit to make modifications bundleable for undo/redo
+			editor.edit(editBuilder => {
+				selections.forEach(selection => {
+					let textToTransform;
+					let rangeToReplace;
 
-                    if (selection.isEmpty) {
-                        // If no selection, use the whole line
-                        const line = document.lineAt(selection.active.line);
-                        textToTransform = line.text;
-                        rangeToReplace = line.range; // Replace the entire line
-                    } else {
-                        // If there is a selection, use the selected text
-                        textToTransform = document.getText(selection);
-                        rangeToReplace = selection; // Replace only the selection
-                    }
+					if (selection.isEmpty) {
+						// If no selection, use the whole line
+						const line = document.lineAt(selection.active.line);
+						textToTransform = line.text;
+						rangeToReplace = line.range; // Replace the entire line
+					} else {
+						// If there is a selection, use the selected text
+						textToTransform = document.getText(selection);
+						rangeToReplace = selection; // Replace only the selection
+					}
 
-                    if (textToTransform) {
-                        // 1. Trim whitespace from start/end
-                        // 2. Split by one or more whitespace characters (\s+)
-                        // 3. Filter out any empty strings resulting from multiple spaces
-                        // 4. Wrap each part in double quotes
-                        // 5. Join with ", "
-                        const parts = textToTransform.trim().split(/\s+/).filter(part => part.length > 0);
-                        const transformedText = parts.map(part => `"${part}"`).join(', ');
+					// if (textToTransform) {
+					// 	// --- START: New logic to handle surrounding quotes ---
+					// 	let textToProcess = textToTransform.trim(); // Trim whitespace first
 
-                        // Replace the original text (either line or selection) with the transformed text
-                        editBuilder.replace(rangeToReplace, transformedText);
-                    }
-                });
-            }).then(success => {
-                if (!success) {
-                    vscode.window.showErrorMessage('Failed to apply transformation.');
-                }
-                // Optional: Move cursor to end of the last replacement if multiple selections were involved
-                // (For simplicity, we'll skip precise cursor management here)
-            });
-        } else {
-            vscode.window.showInformationMessage('No active editor found.');
-        }
-    });
+					// 	// Check if the trimmed string starts and ends with " and has length >= 2
+					// 	if (textToProcess.length >= 2 && textToProcess.startsWith('"') && textToProcess.endsWith('"')) {
+					// 		// Remove the surrounding quotes
+					// 		textToProcess = textToProcess.slice(1, -1);
+					// 	}
+					// 	// --- END: New logic ---
 
-    context.subscriptions.push(disposable);
+					// 	// Now use textToProcess instead of textToTransform.trim() for splitting
+					// 	const parts = textToProcess.split(/\s+/).filter(part => part.length > 0);
+
+					// 	// Join with comma, newline, and 4 spaces for indentation (or your preference)
+					// 	const transformedText = parts.map(part => `"${part}"`).join(',\n    ');
+
+					// 	editBuilder.replace(rangeToReplace, transformedText);
+					// }
+					if (textToTransform) {
+						// 1. Trim whitespace from start/end
+						// 2. Split by one or more whitespace characters (\s+)
+						// 3. Filter out any empty strings resulting from multiple spaces
+						// 4. Wrap each part in double quotes
+						// 5. Join with ", "
+						const parts = textToTransform.trim().split(/\s+/).filter(part => part.length > 0);
+						const transformedText = parts.map(part => `"${part}"`).join(',\n    ');
+
+						// Replace the original text (either line or selection) with the transformed text
+						editBuilder.replace(rangeToReplace, transformedText);
+					}
+				});
+			}).then(success => {
+				if (!success) {
+					vscode.window.showErrorMessage('Failed to apply transformation.');
+				}
+				// Optional: Move cursor to end of the last replacement if multiple selections were involved
+				// (For simplicity, we'll skip precise cursor management here)
+			});
+		} else {
+			vscode.window.showInformationMessage('No active editor found.');
+		}
+	});
+
+	context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
-    activate,
-    deactivate
+	activate,
+	deactivate
 };
