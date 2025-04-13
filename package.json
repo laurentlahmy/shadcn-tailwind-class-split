@@ -3,6 +3,7 @@
   "displayName": "shadcn-tailwind-class-split",
   "description": "",
   "version": "0.0.1",
+  "publisher": "laurentlahmy",
   "engines": {
     "vscode": "^1.99.0"
   },
