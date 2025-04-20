@@ -96,7 +96,7 @@ function activate(context) {
 						// 4. Wrap each part in double quotes
 						// 5. Join with ", "
 						const parts = textToTransform.trim().split(/\s+/).filter(part => part.length > 0);
-						const transformedText = parts.map(part => `"${part}"`).join(',\n    ');
+						const transformedText = parts.map(part => `"${part}"`).join(',\n');
 
 						// Replace the original text (either line or selection) with the transformed text
 						editBuilder.replace(rangeToReplace, transformedText);

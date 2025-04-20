@@ -2,11 +2,11 @@
   "name": "shadcn-tailwind-class-split",
   "displayName": "Split shadcn tailwindcss class strings into new lines",
   "description": "",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "publisher": "laurentlahmy",
   "icon": "icon.jpg",
   "repository": {
-    "url": ""
+    "url": "https://github.com/laurentlahmy/shadcn-tailwind-class-split"
   },
   "engines": {
     "vscode": "^1.99.0"
